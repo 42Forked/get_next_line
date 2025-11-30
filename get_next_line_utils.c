@@ -70,7 +70,7 @@ int	ft_has_newline(char *s)
 	return (0);
 }
 
-char	*ft_strjoin_and_free_old(char *s1, const char *s2)
+char	*ft_strjoin_and_free_old(char *s1, char *s2)
 {
 	int		i;
 	int		j;
@@ -78,7 +78,11 @@ char	*ft_strjoin_and_free_old(char *s1, const char *s2)
 
 	str = (char *)malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
 	if (!str)
+	{
+		free(s1);
+		free(s2);
 		return (NULL);
+	}
 	i = 0;
 	j = 0;
 	while (s1 && s1[i])

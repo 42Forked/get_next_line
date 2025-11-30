@@ -18,6 +18,10 @@ char	*read_and_stash(int fd, char *stash)
 	int		bytes_read;
 
 	temp_buf = (char *)malloc(BUFFER_SIZE + 1);
+	if (!temp_buf)
+		free(stash);
+	if (!temp_buf)
+		return (NULL);
 	bytes_read = 1;
 	while (!ft_has_newline(stash) && bytes_read != 0)
 	{
@@ -25,10 +29,13 @@ char	*read_and_stash(int fd, char *stash)
 		if (bytes_read == -1)
 		{
 			free(temp_buf);
+			free(stash);
 			return (NULL);
 		}
 		temp_buf[bytes_read] = '\0';
 		stash = ft_strjoin_and_free_old(stash, temp_buf);
+		if (!stash)
+			return (NULL);
 	}
 	free(temp_buf);
 	return (stash);
@@ -61,7 +68,10 @@ char	*keep_rest(char *stash)
 	}
 	new_stash = malloc(sizeof(char) * (ft_strlen(stash) - i + 1));
 	if (!new_stash)
+	{
+		free(stash);
 		return (NULL);
+	}
 	i++;
 	while (stash[i])
 		new_stash[j++] = stash[i++];
